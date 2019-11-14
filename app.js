@@ -19,14 +19,6 @@ const limiter = rateLimit({
   max: 100,
 });
 
-app.use((req, res, next) => {
-  req.user = {
-    _id: '5dcc6ac9d868de29a90c468a',
-  };
-
-  next();
-});
-
 app.use(limiter);
 app.use(helmet());
 app.use(express.json());
