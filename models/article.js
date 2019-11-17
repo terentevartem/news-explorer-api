@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const validate = require('validator');
 require('mongoose-type-url');
+const { invalidUrlFormat } = require('../configs/constants');
 
 const articleSchema = new mongoose.Schema({
   keyword: {
@@ -28,7 +29,7 @@ const articleSchema = new mongoose.Schema({
     required: true,
     validate: {
       validator: (v) => validate.isURL(v),
-      message: 'Неправильный формат URL',
+      message: invalidUrlFormat,
     },
   },
   image: {
@@ -36,7 +37,7 @@ const articleSchema = new mongoose.Schema({
     required: true,
     validate: {
       validator: (v) => validate.isURL(v),
-      message: 'Неправильный формат URL',
+      message: invalidUrlFormat,
     },
   },
   owner: {

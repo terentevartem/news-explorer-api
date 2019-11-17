@@ -6,6 +6,8 @@ const helmet = require('helmet');
 const { celebrate, Joi } = require('celebrate');
 const { errors } = require('celebrate');
 const rateLimit = require('express-rate-limit');
+const { mongoUrl } = require('./configs/dev-config');
+const { serverError, serverCrash, notFound } = require('./configs/constants');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const routerArticles = require('./routes/articles');
 const routerUsers = require('./routes/users');
@@ -24,7 +26,7 @@ app.use(helmet());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-mongoose.connect('mongodb://localhost:27017/news-explorer', {
+mongoose.connect(mongoUrl, {
   useNewUrlParser: true,
   useCreateIndex: true,
   useFindAndModify: false,
@@ -36,7 +38,7 @@ app.use(requestLogger);
 
 app.get('/crash-test', () => {
   setTimeout(() => {
-    throw new Error('Сервер сейчас упадёт');
+    throw new Error(serverCrash);
   }, 0);
 });
 
@@ -61,18 +63,11 @@ app.use('/users', routerUsers);
 
 app.use(errorLogger);
 
-app.get('*', (req, res) => res.status(404).send({ message: 'Запрашиваемый ресурс не найден' }));
+app.get('*', (req, res) => res.status(404).send({ message: notFound }));
 app.use(errors());
 app.use((err, req, res) => {
   const { statusCode = 500, message } = err;
-
-  res
-    .status(statusCode)
-    .send({
-      message: statusCode === 500
-        ? 'На сервере произошла ошибка'
-        : message,
-    });
+  res.status(statusCode).send({ message: statusCode === 500 ? serverError : message });
 });
 
 app.listen(PORT, () => {
