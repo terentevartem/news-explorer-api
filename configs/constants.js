@@ -1,7 +1,7 @@
 module.exports = {
   invalidRequest: 'Неверный запрос',
   noArticle: 'Такой статьи не существует',
-  noAccess: 'Вы не можете удалять чужие карточки!',
+  noAccess: 'Вы не можете удалять чужие статьи',
   notFound: 'Запрашиваемый ресурс не найден',
   serverError: 'На сервере произошла ошибка',
   serverCrash: 'Сервер сейчас упадёт',
@@ -11,4 +11,6 @@ module.exports = {
   needAuthorization: 'Необходима авторизация',
   invalidMailFormat: 'Неправильный формат почты',
   invalidUrlFormat: 'Неправильный формат URL',
+  limiterWindowMs: '15 * 60 * 1000',
+  limiterMax: '100',
 };

@@ -7,18 +7,24 @@ const { celebrate, Joi } = require('celebrate');
 const { errors } = require('celebrate');
 const rateLimit = require('express-rate-limit');
 const { mongoUrl } = require('./configs/dev-config');
-const { serverError, serverCrash, notFound } = require('./configs/constants');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const routerArticles = require('./routes/articles');
 const routerUsers = require('./routes/users');
 const { createUser, login } = require('./controllers/users');
 const auth = require('./middlewares/auth');
+const {
+  serverError,
+  serverCrash,
+  notFound,
+  limiterWindowMs,
+  limiterMax,
+} = require('./configs/constants');
 
 const app = express();
 const { PORT = 3000 } = process.env;
 const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: 100,
+  windowMs: limiterWindowMs,
+  max: limiterMax,
 });
 
 app.use(limiter);

@@ -66,5 +66,8 @@ module.exports.findUserById = async (req, res, next) => {
   } catch (e) {
     return next(new BadRequestError(invalidRequest));
   }
-  res.send(user);
+  res.send({
+    email: user.email,
+    name: user.name,
+  });
 };
