@@ -11,20 +11,21 @@ const { requestLogger, errorLogger } = require('./middlewares/logger');
 const routerArticles = require('./routes/articles');
 const routerUsers = require('./routes/users');
 const { createUser, login } = require('./controllers/users');
+const NotFoundError = require('./errors/not-found-err');
 const auth = require('./middlewares/auth');
 const {
-  serverError,
-  serverCrash,
-  notFound,
-  limiterWindowMs,
-  limiterMax,
+  SERVER_ERROR,
+  SERVER_CRASH,
+  NOT_FOUND,
+  LIMITER_WINDOW_MS,
+  LIMITER_MAX,
 } = require('./configs/constants');
 
 const app = express();
 const { PORT = 3000 } = process.env;
 const limiter = rateLimit({
-  windowMs: limiterWindowMs,
-  max: limiterMax,
+  windowMs: LIMITER_WINDOW_MS,
+  max: LIMITER_MAX,
 });
 
 app.use(limiter);
@@ -44,7 +45,7 @@ app.use(requestLogger);
 
 app.get('/crash-test', () => {
   setTimeout(() => {
-    throw new Error(serverCrash);
+    throw new Error(SERVER_CRASH);
   }, 0);
 });
 
@@ -62,18 +63,21 @@ app.post('/signup', celebrate({
   }),
 }), createUser);
 
-app.use(auth);
+// app.use(auth);
 
 app.use('/articles', routerArticles);
 app.use('/users', routerUsers);
 
 app.use(errorLogger);
 
-app.get('*', (req, res) => res.status(404).send({ message: notFound }));
+app.use('*', (req, res, next) => {
+  next(new NotFoundError(NOT_FOUND));
+});
 app.use(errors());
-app.use((err, req, res) => {
+app.use((err, req, res, next) => {
   const { statusCode = 500, message } = err;
-  res.status(statusCode).send({ message: statusCode === 500 ? serverError : message });
+  res.status(statusCode).send({ message: statusCode === 500 ? SERVER_ERROR : message });
+  next();
 });
 
 app.listen(PORT, () => {
