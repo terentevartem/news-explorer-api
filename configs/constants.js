@@ -1,0 +1,16 @@
+module.exports = {
+  INVALID_REQUEST: 'Неверный запрос',
+  NO_ARTICLE: 'Такой статьи не существует',
+  NO_ACCESS: 'Вы не можете удалять чужие статьи',
+  NOT_FOUND: 'Запрашиваемый ресурс не найден',
+  SERVER_ERROR: 'На сервере произошла ошибка',
+  SERVER_CRASH: 'Сервер сейчас упадёт',
+  DUPLICATE_EMAIL: 'Пользователь с таким email уже существует',
+  INCORRECT_EMAIL_OR_PASS: 'Неправильные почта или пароль',
+  NO_USER: 'Нет пользователя с таким id',
+  NEED_AUTHORIZATION: 'Необходима авторизация',
+  INVALID_MAIL_FORMAT: 'Неправильный формат почты',
+  INVALID_URL_FORMAT: 'Неправильный формат URL',
+  LIMITER_WINDOW_MS: 15 * 60 * 1000,
+  LIMITER_MAX: 100,
+};
