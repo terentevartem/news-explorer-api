@@ -11,6 +11,6 @@ module.exports = {
   NEED_AUTHORIZATION: 'Необходима авторизация',
   INVALID_MAIL_FORMAT: 'Неправильный формат почты',
   INVALID_URL_FORMAT: 'Неправильный формат URL',
-  LIMITER_WINDOW_MS: '15 * 60 * 1000',
-  LIMITER_MAX: '100',
+  LIMITER_WINDOW_MS: 15 * 60 * 1000,
+  LIMITER_MAX: 100,
 };
