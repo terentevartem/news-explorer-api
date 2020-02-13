@@ -1,5 +1,7 @@
 require('dotenv').config();
 const express = require('express');
+const cors = require('cors');
+const cookieParser = require('cookie-parser');
 const path = require('path');
 const mongoose = require('mongoose');
 const helmet = require('helmet');
@@ -22,6 +24,10 @@ const {
 } = require('./configs/constants');
 
 const app = express();
+app.use(cors());
+app.options('*', cors());
+app.use(cookieParser());
+
 const { PORT = 3000 } = process.env;
 const limiter = rateLimit({
   windowMs: LIMITER_WINDOW_MS,
@@ -49,13 +55,13 @@ app.get('/crash-test', () => {
   }, 0);
 });
 
-app.post('/signin', celebrate({
+app.post('/signin', cors(), celebrate({
   body: Joi.object().keys({
     email: Joi.string().required().email(),
     password: Joi.string().required().min(8),
   }),
 }), login);
-app.post('/signup', celebrate({
+app.post('/signup', cors(), celebrate({
   body: Joi.object().keys({
     email: Joi.string().required().email(),
     password: Joi.string().required().min(8),
@@ -63,7 +69,7 @@ app.post('/signup', celebrate({
   }),
 }), createUser);
 
-// app.use(auth);
+app.use(auth);
 
 app.use('/articles', routerArticles);
 app.use('/users', routerUsers);

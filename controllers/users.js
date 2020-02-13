@@ -50,9 +50,8 @@ module.exports.login = async (req, res, next) => {
   } catch (e) {
     return next(new UnauthorizedError(INCORRECT_EMAIL_OR_PASS));
   }
-  res.send({
-    token: jwt.sign({ _id: user._id }, NODE_ENV === 'production' ? JWT_SECRET : jwtSecretDev, { expiresIn: '7d' }),
-  });
+  const token = jwt.sign({ _id: user._id }, NODE_ENV === 'production' ? JWT_SECRET : jwtSecretDev, { expiresIn: '7d' });
+  res.send({ token });
 };
 
 // eslint-disable-next-line consistent-return

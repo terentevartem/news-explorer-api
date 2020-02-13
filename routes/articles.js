@@ -1,9 +1,10 @@
+const cors = require('cors');
 const routerArticles = require('express').Router();
 const { celebrate, Joi } = require('celebrate');
 const { getArticles, createArticle, deleteArticle } = require('../controllers/articles');
 
-routerArticles.get('/', getArticles);
-routerArticles.post('/', celebrate({
+routerArticles.get('/', cors(), getArticles);
+routerArticles.post('/', cors(), celebrate({
   body: Joi.object().keys({
     keyword: Joi.string().required(),
     title: Joi.string().required(),
