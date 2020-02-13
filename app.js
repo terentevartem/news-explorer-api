@@ -1,3 +1,4 @@
+/* eslint-disable prefer-arrow-callback */
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
@@ -43,6 +44,13 @@ mongoose.connect(mongoUrl, {
   useNewUrlParser: true,
   useCreateIndex: true,
   useFindAndModify: false,
+});
+
+app.use(function(req, res, next) {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+  res.header('Access-Control-Allow-Methods', 'GET,HEAD,PUT,PATCH,POST,DELETE');
+  next();
 });
 
 app.use(express.static(path.join(__dirname, 'public')));
